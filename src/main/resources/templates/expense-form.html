@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Expense</title>
+</head>
+<body>
+    <h1>Create New Expense</h1>
+    <hr/>
+    <form th:action="@{/saveOrUpdateExpense}" th:object="${expense}" method="post">
+        <input type="text" placeholder="Enter expense name" th:field="*{name}"/>
+        <br/><br/>
+        <input type="text" placeholder="Enter expense amount" th:field="*{amount}"/>
+        <br/><br/>
+        <input type="date" th:field="*{dateString}"/>
+        <br/><br/>
+        <textarea rows="5" placeholder="Enter expense description" th:field="*{description}"></textarea>
+        <br/><br/>
+        <button type="submit">Save</button>
+
+    </form>
+</body>
+</html>
