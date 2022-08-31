@@ -11,7 +11,7 @@ public class DateTimeUtil {
     }
 
     public static Date convertStringToDate(String dateString) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date utilDate = sdf.parse(dateString);
         return new Date(utilDate.getTime());
     }
