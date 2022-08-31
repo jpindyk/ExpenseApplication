@@ -36,6 +36,16 @@ public class ExpenseServiceImplementation implements ExpenseService{
         return mapToDTO(expense);
     }
 
+    @Override
+    public void deleteExpense(String id) {
+        Expense existingExpense = expenseRepository.findByExpenseId(id).orElseThrow(
+                () -> new RuntimeException("Expense not found for the id: " + id)
+        );
+        expenseRepository.delete(existingExpense);
+
+    }
+
+
     private ExpenseDTO mapToDTO(Expense expense) {
         ExpenseDTO expenseDTO = modelMapper.map(expense, ExpenseDTO.class);
         expenseDTO.setDateString(DateTimeUtil.convertDateToString(expenseDTO.getDate()));
