@@ -9,5 +9,6 @@ public interface ExpenseService {
 
     public List<ExpenseDTO> getAllExpenses();
     public ExpenseDTO saveExpenseDetails(ExpenseDTO expenseDTO) throws ParseException;
-    void deleteExpense(String id);
+    public void deleteExpense(String id);
+    public ExpenseDTO getExpenseById (String id);
 }

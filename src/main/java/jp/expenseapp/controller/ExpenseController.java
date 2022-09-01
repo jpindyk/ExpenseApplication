@@ -47,5 +47,14 @@ public class ExpenseController {
         return "redirect:/expenses";
     }
 
+    @GetMapping("/updateExpense")
+    public String updateExpense(@RequestParam String id,
+                                Model model) {
+        System.out.println("Printing the expense Id: " + id);
+        ExpenseDTO expense = expenseService.getExpenseById(id);
+        model.addAttribute("expense", expense);
+        return "expense-form";
+    }
+
 
 }

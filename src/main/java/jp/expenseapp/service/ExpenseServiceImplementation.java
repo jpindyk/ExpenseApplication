@@ -56,8 +56,17 @@ public class ExpenseServiceImplementation implements ExpenseService{
 
     private Expense mapToEntity(ExpenseDTO expenseDTO) throws ParseException {
         Expense expense = modelMapper.map(expenseDTO, Expense.class);
-        expense.setExpenseId(UUID.randomUUID().toString());
+        if (expense.getId() == null) {
+            expense.setExpenseId(UUID.randomUUID().toString());
+        }
         expense.setDate(DateTimeUtil.convertStringToDate(expenseDTO.getDateString()));
         return  expense;
+    }
+
+    public ExpenseDTO getExpenseById (String id) {
+        Expense existingExpense = expenseRepository.findByExpenseId(id).orElseThrow(
+                () -> new RuntimeException("Expense not found for the id: " + id)
+        );
+        return mapToDTO(existingExpense);
     }
 }

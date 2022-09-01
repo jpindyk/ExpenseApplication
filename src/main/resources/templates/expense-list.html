@@ -5,6 +5,9 @@
 <body>
 <h1>List of Expenses</h1>
 <hr/>
+<form>
+    Search by Keyword: <input type="text" placeholder="Enter keyword" />
+</form>
 <div>
     <a th:href="@{/createExpense}">Create Expense</a>
 </div>
@@ -25,6 +28,7 @@
         <td>
             <a th:href="@{/deleteExpense(id=${expense.expenseId})}"
                onclick="return confirm('Are you sure want to delete the expense?');">Delete</a>
+            <a th:href="@{updateExpense(id=${expense.expenseId})}">Update</a>
         </td>
     </tr>
     </tbody>
