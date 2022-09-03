@@ -1,12 +1,21 @@
 <html xmlns:th="https://thymeleaf.org">
 <head>
     <title>Expense Manager - Expenses</title>
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.css}" />
 </head>
 <body>
 <h1>List of Expenses</h1>
 <hr/>
-<form>
-    Search by Keyword: <input type="text" placeholder="Enter keyword" />
+<form method="get" th:object="${filter}" th:action="@{/filterExpenses}">
+    Search by Keyword:
+    <input type="text" placeholder="Enter keyword" th:field="*{keyword}"/>
+    <select th:field="*{sortBy}">
+        <option value="date">Date</option>
+        <option value="amount">Amount</option>
+    </select>
+    <input type="text" id="startDate" placeholder="Start date" th:field="*{startDate}" />
+    <input type="text" id="endDate" placeholder="End date" th:field="*{endDate}" />
+    <input type="submit" value="Submit" />
 </form>
 <div>
     <a th:href="@{/createExpense}">Create Expense</a>
@@ -33,5 +42,8 @@
     </tr>
     </tbody>
 </table>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/jquery-ui.js}"></script>
+<script th:src="@{/js/expense-list.js}"></script>
 </body>
 </html>

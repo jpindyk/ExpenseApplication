@@ -1,6 +1,7 @@
 package jp.expenseapp.controller;
 
 import jp.expenseapp.dto.ExpenseDTO;
+import jp.expenseapp.dto.ExpenseFilterDTO;
 import jp.expenseapp.service.ExpenseService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +24,8 @@ public class ExpenseController {
 
     @GetMapping("/expenses")
     public String showExpenseList(Model model){
-        List<ExpenseDTO> expenses = expenseService.getAllExpenses();
-        model.addAttribute("expenses", expenses);
+        model.addAttribute("expenses", expenseService.getAllExpenses());
+        model.addAttribute("filter", new ExpenseFilterDTO());
         return "expense-list";
     }
 
@@ -55,6 +56,8 @@ public class ExpenseController {
         model.addAttribute("expense", expense);
         return "expense-form";
     }
+
+
 
 
 }

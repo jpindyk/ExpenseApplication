@@ -1,16 +1,19 @@
 package jp.expenseapp.service;
 
 import jp.expenseapp.dto.ExpenseDTO;
+import jp.expenseapp.dto.ExpenseFilterDTO;
 import jp.expenseapp.model.Expense;
 import jp.expenseapp.repository.ExpenseRepository;
 import jp.expenseapp.util.DateTimeUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 @Service
 public class ExpenseServiceImplementation implements ExpenseService{
@@ -45,6 +48,29 @@ public class ExpenseServiceImplementation implements ExpenseService{
 
     }
 
+    @Override
+    public List<ExpenseDTO> getFilteredExpenses(ExpenseFilterDTO expenseFilterDTO) throws ParseException {
+        String keyword = expenseFilterDTO.getKeyword();
+        String sortBy = expenseFilterDTO.getSortBy();
+        String startDateString = expenseFilterDTO.getStartDate();
+        String endDateString = expenseFilterDTO.getEndDate();
+
+        Date startDate = !startDateString.isEmpty() ? DateTimeUtil.convertStringToDate(expenseFilterDTO.getStartDate()) :
+                new Date(0);
+        Date endDate = !endDateString.isEmpty() ? DateTimeUtil.convertStringToDate(expenseFilterDTO.getEndDate()) :
+                new Date(System.currentTimeMillis());
+
+        List<Expense> expenses = expenseRepository.findByNameContainingAndDateBetween(keyword, startDate, endDate);
+        List<ExpenseDTO> expenseDTOS = expenses.stream().map(e->mapToDTO(e))
+                .collect(Collectors.toList());
+
+        if(sortBy.equals("date")) {
+            expenseDTOS.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+        } else {
+            expenseDTOS.sort((o1, o2) -> o2.getAmount().compareTo(o1.getAmount()));
+        }
+        return expenseDTOS;
+    }
 
     private ExpenseDTO mapToDTO(Expense expense) {
         ExpenseDTO expenseDTO = modelMapper.map(expense, ExpenseDTO.class);
