@@ -3,13 +3,16 @@ package jp.expenseapp.controller;
 import jp.expenseapp.dto.ExpenseDTO;
 import jp.expenseapp.dto.ExpenseFilterDTO;
 import jp.expenseapp.service.ExpenseService;
+import jp.expenseapp.validator.ExpenseValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
 
@@ -37,8 +40,15 @@ public class ExpenseController {
         return "expense-form";
     }
     @PostMapping("/saveOrUpdateExpense")
-    public String saveOrUpdateExpenseDetails(@ModelAttribute("expense") ExpenseDTO expenseDTO) throws ParseException {
+    public String saveOrUpdateExpenseDetails(@Valid @ModelAttribute("expense") ExpenseDTO expenseDTO,
+                                             BindingResult result) throws ParseException {
         System.out.println("Printing the Expense DTO: " + expenseDTO);
+
+        new ExpenseValidator().validate(expenseDTO, result);
+
+        if (result.hasErrors()){
+            return "expense-form";
+        }
         expenseService.saveExpenseDetails(expenseDTO);
         return "redirect:/expenses";
     }

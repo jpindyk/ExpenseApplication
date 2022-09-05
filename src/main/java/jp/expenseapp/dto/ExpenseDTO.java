@@ -2,7 +2,9 @@ package jp.expenseapp.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -19,6 +21,8 @@ public class ExpenseDTO {
     private String name;
 
     private String description;
+    @NotNull(message = "Expense amount should not be empty")
+    @Min(value = 1, message = "Expense amount should not be less than 1")
     private BigDecimal amount;
     private Date date;
     private String dateString;
