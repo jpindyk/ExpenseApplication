@@ -26,6 +26,7 @@ public class ExpenseFilterController {
         System.out.println("Printing the filter dto: " + expenseFilterDTO);
         List<ExpenseDTO> list = expenseService.getFilteredExpenses(expenseFilterDTO);
         model.addAttribute("expenses", list);
+        model.addAttribute("sum", expenseService.totalExpenses(list));
         return "expense-list";
     }
 

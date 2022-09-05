@@ -8,6 +8,7 @@ import jp.expenseapp.util.DateTimeUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.List;
@@ -70,6 +71,16 @@ public class ExpenseServiceImplementation implements ExpenseService{
             expenseDTOS.sort((o1, o2) -> o2.getAmount().compareTo(o1.getAmount()));
         }
         return expenseDTOS;
+    }
+
+    @Override
+    public BigDecimal totalExpenses(List<ExpenseDTO> expenseDTOS) {
+        BigDecimal sum = new BigDecimal(0);
+        BigDecimal total = expenseDTOS.stream()
+                .map(e->e.getAmount().add(sum))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return total;
+
     }
 
     private ExpenseDTO mapToDTO(Expense expense) {
