@@ -3,7 +3,10 @@ package jp.expenseapp.controller;
 import jp.expenseapp.dto.UserDTO;
 import jp.expenseapp.repository.UserRepository;
 import jp.expenseapp.service.UserService;
-import jp.expenseapp.validator.UniqueValidator;
+import jp.expenseapp.validator.UniqueUserValidator;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +27,11 @@ public class AuthController {
 
     @GetMapping({"/login","/"})
     public String showLoginPage() {
-        return "login";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication==null || authentication instanceof AnonymousAuthenticationToken) {
+            return "login";
+        }
+        return "redirect:/expenses";
     }
 
     @GetMapping("/register")
@@ -38,12 +45,12 @@ public class AuthController {
                            Model model) {
         System.out.println("Printing the user details: " + userDTO);
 
-        new UniqueValidator(userService).validate(userDTO, result);
+        new UniqueUserValidator(userService).validate(userDTO, result);
         if(result.hasErrors()) {
             return "register";
         }
         userService.save(userDTO);
         model.addAttribute("successMessage", true);
-        return "login";
+        return "response";
     }
 }
