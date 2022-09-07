@@ -2,6 +2,7 @@ package jp.expenseapp.service;
 
 import jp.expenseapp.dto.ExpenseDTO;
 import jp.expenseapp.dto.ExpenseFilterDTO;
+import jp.expenseapp.exception.ExpenseNotFoundException;
 import jp.expenseapp.model.Expense;
 import jp.expenseapp.repository.ExpenseRepository;
 import jp.expenseapp.util.DateTimeUtil;
@@ -48,7 +49,7 @@ public class ExpenseServiceImplementation implements ExpenseService{
     @Override
     public void deleteExpense(String id) {
         Expense existingExpense = expenseRepository.findByExpenseId(id).orElseThrow(
-                () -> new RuntimeException("Expense not found for the id: " + id)
+                () -> new ExpenseNotFoundException("Expense not found for the id: " + id)
         );
         expenseRepository.delete(existingExpense);
 
@@ -111,7 +112,7 @@ public class ExpenseServiceImplementation implements ExpenseService{
 
     public ExpenseDTO getExpenseById (String id) {
         Expense existingExpense = expenseRepository.findByExpenseId(id).orElseThrow(
-                () -> new RuntimeException("Expense not found for the id: " + id)
+                () -> new ExpenseNotFoundException("Expense not found for the id: " + id)
         );
         return mapToDTO(existingExpense);
     }
