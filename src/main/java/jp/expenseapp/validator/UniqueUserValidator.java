@@ -1,16 +1,15 @@
 package jp.expenseapp.validator;
 
 import jp.expenseapp.dto.UserDTO;
-import jp.expenseapp.repository.UserRepository;
 import jp.expenseapp.service.UserService;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-public class UniqueValidator implements Validator {
+public class UniqueUserValidator implements Validator {
 
     private final UserService userService;
 
-    public UniqueValidator(UserService userService) {
+    public UniqueUserValidator(UserService userService) {
         this.userService = userService;
     }
 
