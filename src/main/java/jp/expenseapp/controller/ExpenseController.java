@@ -2,7 +2,9 @@ package jp.expenseapp.controller;
 
 import jp.expenseapp.dto.ExpenseDTO;
 import jp.expenseapp.dto.ExpenseFilterDTO;
+import jp.expenseapp.model.Expense;
 import jp.expenseapp.service.ExpenseService;
+import jp.expenseapp.util.DateTimeUtil;
 import jp.expenseapp.validator.ExpenseValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,14 +31,16 @@ public class ExpenseController {
     public String showExpenseList(Model model){
         List<ExpenseDTO> expenseDTOS = expenseService.getAllExpenses();
         model.addAttribute("expenses", expenseDTOS);
-        model.addAttribute("filter", new ExpenseFilterDTO());
+        model.addAttribute("filter", new ExpenseFilterDTO(DateTimeUtil.getCurrentMonthStartDate(), DateTimeUtil.getCurrentMonthDate()));
         model.addAttribute("sum", expenseService.totalExpenses(expenseDTOS));
         return "expense-list";
     }
 
     @GetMapping("/createExpense")
     public String showExpenseForm(Model model) {
-        model.addAttribute("expense", new ExpenseDTO());
+        ExpenseDTO expenseDTO = new ExpenseDTO();
+        expenseDTO.setDateString(DateTimeUtil.getCurrentMonthDate());
+        model.addAttribute("expense", expenseDTO);
         return "expense-form";
     }
     @PostMapping("/saveOrUpdateExpense")
