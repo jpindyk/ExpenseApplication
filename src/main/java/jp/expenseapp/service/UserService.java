@@ -9,4 +9,5 @@ public interface UserService {
     public void save (UserDTO userDTO);
     public Optional<User> findByName (String name);
     public Optional<User> findByEmail (String email);
+    public User getLoggedUser();
 }

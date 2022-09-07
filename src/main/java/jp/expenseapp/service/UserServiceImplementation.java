@@ -4,6 +4,8 @@ import jp.expenseapp.dto.UserDTO;
 import jp.expenseapp.model.User;
 import jp.expenseapp.repository.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,15 @@ public class UserServiceImplementation implements UserService{
     @Override
     public Optional<User> findByEmail(String email) {
         return repository.findUserByEmail(email);
+    }
+
+    @Override
+    public User getLoggedUser() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = repository.findUserByEmail(userEmail).orElseThrow(
+                ()-> new UsernameNotFoundException("User not found for email: "+ userEmail)
+        );
+        return user;
     }
 
     private User mapToEntity(UserDTO userDTO) {

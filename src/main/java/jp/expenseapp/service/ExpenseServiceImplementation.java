@@ -21,14 +21,18 @@ public class ExpenseServiceImplementation implements ExpenseService{
 
     private ExpenseRepository expenseRepository;
     private ModelMapper modelMapper;
+    private UserService userService;
 
-    public ExpenseServiceImplementation(ExpenseRepository expenseRepository, ModelMapper modelMapper) {
+    public ExpenseServiceImplementation(ExpenseRepository expenseRepository, ModelMapper modelMapper, UserService userService) {
         this.expenseRepository = expenseRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+
     }
     @Override
     public List<ExpenseDTO> getAllExpenses() {
-        return expenseRepository.findAll().stream()
+        return expenseRepository.findByUserId(userService.getLoggedUser().getId())
+                .stream()
                 .map(e->mapToDTO(e))
                 .collect(Collectors.toList());
     }
@@ -36,6 +40,7 @@ public class ExpenseServiceImplementation implements ExpenseService{
     @Override
     public ExpenseDTO saveExpenseDetails(ExpenseDTO expenseDTO) throws ParseException {
         Expense expense = mapToEntity(expenseDTO);
+        expense.setUser(userService.getLoggedUser());
         expenseRepository.save(expense);
         return mapToDTO(expense);
     }
@@ -61,7 +66,11 @@ public class ExpenseServiceImplementation implements ExpenseService{
         Date endDate = !endDateString.isEmpty() ? DateTimeUtil.convertStringToDate(expenseFilterDTO.getEndDate()) :
                 new Date(System.currentTimeMillis());
 
-        List<Expense> expenses = expenseRepository.findByNameContainingAndDateBetween(keyword, startDate, endDate);
+        List<Expense> expenses = expenseRepository.findByNameContainingAndDateBetweenAndUserId(
+                keyword,
+                startDate,
+                endDate,
+                userService.getLoggedUser().getId());
         List<ExpenseDTO> expenseDTOS = expenses.stream().map(e->mapToDTO(e))
                 .collect(Collectors.toList());
 
