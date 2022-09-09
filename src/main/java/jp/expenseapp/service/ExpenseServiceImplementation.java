@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 
 @Service
-public class ExpenseServiceImplementation implements ExpenseService{
+public class ExpenseServiceImplementation implements ExpenseService {
 
     private ExpenseRepository expenseRepository;
     private ModelMapper modelMapper;
@@ -30,17 +31,25 @@ public class ExpenseServiceImplementation implements ExpenseService{
         this.userService = userService;
 
     }
+
     @Override
     public List<ExpenseDTO> getAllExpenses() {
-        return expenseRepository.findByUserId(userService.getLoggedUser().getId())
+        Long userId = userService.getLoggedUser().getId();
+        return expenseRepository.findByDateBetweenAndUserId(
+                        Date.valueOf(LocalDate.now().withDayOfMonth(1)),
+                        Date.valueOf(LocalDate.now()),
+                        userId)
                 .stream()
-                .map(e->mapToDTO(e))
+                .map(e -> mapToDTO(e))
                 .collect(Collectors.toList());
     }
 
     @Override
     public ExpenseDTO saveExpenseDetails(ExpenseDTO expenseDTO) throws ParseException {
         Expense expense = mapToEntity(expenseDTO);
+        if(!expense.getDate().before(new java.util.Date())) {
+            throw new RuntimeException("Future date is not allowed");
+        }
         expense.setUser(userService.getLoggedUser());
         expenseRepository.save(expense);
         return mapToDTO(expense);
@@ -72,10 +81,10 @@ public class ExpenseServiceImplementation implements ExpenseService{
                 startDate,
                 endDate,
                 userService.getLoggedUser().getId());
-        List<ExpenseDTO> expenseDTOS = expenses.stream().map(e->mapToDTO(e))
+        List<ExpenseDTO> expenseDTOS = expenses.stream().map(e -> mapToDTO(e))
                 .collect(Collectors.toList());
 
-        if(sortBy.equals("date")) {
+        if (sortBy.equals("date")) {
             expenseDTOS.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
         } else {
             expenseDTOS.sort((o1, o2) -> o2.getAmount().compareTo(o1.getAmount()));
@@ -87,7 +96,7 @@ public class ExpenseServiceImplementation implements ExpenseService{
     public BigDecimal totalExpenses(List<ExpenseDTO> expenseDTOS) {
         BigDecimal sum = new BigDecimal(0);
         BigDecimal total = expenseDTOS.stream()
-                .map(e->e.getAmount().add(sum))
+                .map(e -> e.getAmount().add(sum))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         return total;
 
@@ -100,17 +109,16 @@ public class ExpenseServiceImplementation implements ExpenseService{
     }
 
 
-
     private Expense mapToEntity(ExpenseDTO expenseDTO) throws ParseException {
         Expense expense = modelMapper.map(expenseDTO, Expense.class);
         if (expense.getId() == null) {
             expense.setExpenseId(UUID.randomUUID().toString());
         }
         expense.setDate(DateTimeUtil.convertStringToDate(expenseDTO.getDateString()));
-        return  expense;
+        return expense;
     }
 
-    public ExpenseDTO getExpenseById (String id) {
+    public ExpenseDTO getExpenseById(String id) {
         Expense existingExpense = expenseRepository.findByExpenseId(id).orElseThrow(
                 () -> new ExpenseNotFoundException("Expense not found for the id: " + id)
         );
