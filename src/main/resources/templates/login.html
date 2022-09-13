@@ -10,11 +10,12 @@
 </head>
 <body>
 <div class="box-layout justify-content-center">
-    <div clas="card box-layout__box text-center">
-        <div clas="card-header border-bottom-0 pb-0 bg-white">
+    <div class="card box-layout__box text-center">
+
+        <div class="card-header border-bottom-0 pb-0 bg-white">
 
             <h1 class="box-layout__title">Expense Manager</h1>
-            <p class="box-layout__title">Track your expenses!</p>
+            <p class="box-layout__title">Tracker your expenses that never before!</p>
         </div>
 
         <div class="card-body pt-0">
@@ -27,27 +28,32 @@
                 </div>
                 <div th:if="${param.logout}">
                     <div class="alert help-block">
-                        You are logged out from application
+                        You have been logged out from the application
                     </div>
                 </div>
                 <input type="text"
                        name="email"
                        placeholder="Enter email"
                        class="form-control mb-3"
-                       autofocus="autofocus"/>
+                       autofocus="autofocus" />
 
                 <input type="password"
                        name="password"
                        placeholder="Enter password"
-                       class="form-control mb-3"/>
+                       class="form-control mb-3" />
+
                 <button type="submit" class="btn form-control button_default text">Login</button>
             </form>
+
         </div>
+
         <div class="card-footer bg-white border-top-0">
-            <span class="float-right">
-                New User? - <a th:href="@{/register}" class="base-color font-weight-bold">Register</a>
-            </span>
+                <span class="float-right">
+                    New User? - <a th:href="@{/register}"
+                                   class="base-color font-weight-bold">Register</a>
+                </span>
         </div>
+
     </div>
 </div>
     <script th:src="@{/js/jquery.js}"></script>
