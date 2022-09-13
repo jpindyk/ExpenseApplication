@@ -45,9 +45,14 @@ $(function() {
                     maxlength: 'Password should be less than 15 characters'
                 },
                 confirmPassword: {
-                    required: 'Please enter confirm password',
+                    required: 'Please confirm password',
                     equalTo: 'Password and confirm password should be same'
                 }
+            },
+            errorElement: 'em',
+            errorPlacement: function (error,element) {
+                error.addClass('help-back');
+                error.insertAfter(element);
             }
 
         })
