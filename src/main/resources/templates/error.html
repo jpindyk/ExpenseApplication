@@ -2,11 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Expense Manager - Error</title>
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/response.css}"/>
 </head>
 <body>
-<h1>Under Construction</h1>
-<p>The page you are looking is under construction. Please come back later</p>
-<a th:href="@{/expenses}">Main Page</a>
+<nav class="fixed-top bg-header-color py-4">
+    <div class="app-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <a th:href="@{/expenses}" class="text-white">
+                    <span class="font-size-medium font-weight-bold">
+                        Expense Manager
+                    </span>
+            </a>
+
+        </div>
+    </div>
+</nav>
+<div class="container p-5 my-5 border container-top-margin">
+    <h1>Under Construction</h1>
+    <p>The page you are looking is under construction. Please come back later</p>
+    <a th:href="@{/expenses}" class="btn button_default">Main Page</a>
+</div>
+<footer class="py-5">
+    <div class="container">
+        <p class="m-0 text-center text-dark">
+            Copyright &copy; JP Expense Manager
+        </p>
+
+    </div>
+</footer>
+<script th:src="@{/js/bootstrap.js}"></script>
 </body>
 </html>

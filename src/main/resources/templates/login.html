@@ -7,9 +7,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login Page - Expense Manager</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <link rel="stylesheet" th:href="@{/css/base.css}" />
-    <link rel="stylesheet" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
 </head>
 <body>
 <div class="box-layout justify-content-center">
@@ -38,12 +38,12 @@
                        name="email"
                        placeholder="Enter email"
                        class="form-control mb-3"
-                       autofocus="autofocus" />
+                       autofocus="autofocus"/>
 
                 <input type="password"
                        name="password"
                        placeholder="Enter password"
-                       class="form-control mb-3" />
+                       class="form-control mb-3"/>
 
                 <button type="submit" class="btn form-control button_default text">Login</button>
             </form>
@@ -59,9 +59,17 @@
 
     </div>
 </div>
-    <script th:src="@{/js/jquery.js}"></script>
-    <script th:src="@{/js/jquery-validator.js}"></script>
-    <script th:src="@{/js/bootstrap.js}"></script>
-    <script th:src="@{/js/login.js}"></script>
+<footer class="py-5">
+    <div class="container">
+        <p class="m-0 text-center text-dark">
+            Copyright &copy; JP Expense Manager
+        </p>
+
+    </div>
+</footer>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/jquery-validator.js}"></script>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/login.js}"></script>
 </body>
 </html>
