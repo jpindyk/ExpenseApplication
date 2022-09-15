@@ -56,7 +56,12 @@ $(function() {
                 },
                 dateString:{
                     required: 'Please enter the expense date',
-                },
+                }
+            },
+            errorElement: 'em',
+            errorPlacement: function (error,element) {
+                error.addClass('help-back');
+                error.insertAfter(element);
             }
         })
     }
