@@ -10,7 +10,6 @@ User can filter the results by keyword and sorting by date or amount.
 - Spring Boot 2.6.3
 - Hibernate
 - Spring Security
-- 
 #### Frontend: 
 - HTML
 - CSS
